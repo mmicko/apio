@@ -241,5 +241,61 @@
     "ftdi": {
       "desc": "Lattice iCE40UP5K Breakout"
     }
+  },
+  "TinyFPGA-EX-rev1": {
+    "name": "TinyFPGA EX rev 1",
+    "fpga": "ECP5-LFE5U-85F-CSFBGA285",
+    "programmer": {
+      "type": "tinyprog"
+    },
+    "usb": {
+      "vid": "1d50",
+      "pid": "6130"
+    },
+    "tinyprog": {
+      "desc": "TinyFPGA EX"
+    }
+  },
+  "TinyFPGA-EX-rev2": {
+    "name": "TinyFPGA EX rev 2",
+    "fpga": "ECP5-LFE5UM5G-85F-CSFBGA285",
+    "programmer": {
+      "type": "tinyprog"
+    },
+    "usb": {
+      "vid": "1d50",
+      "pid": "6130"
+    },
+    "tinyprog": {
+      "desc": "TinyFPGA EX"
+    }
+  },
+  "ulx3s": {
+    "name": "ULX3S",
+    "fpga": "ECP5-LFE5U-45F-CABGA381",
+    "programmer": {
+      "type": "iceprog"
+    },
+    "usb": {
+      "vid": "0403",
+      "pid": "6010"
+    },
+    "ftdi": {
+      "desc": "Dual RS232-HS"
+    }
+  },  
+  "versa": {
+    "name": "ECP5 Versa",
+    "fpga": "ECP5-LFE5UM-45F-CABGA381",
+    "programmer": {
+      "type": "iceprog"
+    },
+    "usb": {
+      "vid": "0403",
+      "pid": "6010"
+    },
+    "ftdi": {
+      "desc": "Dual RS232-HS"
+    }
   }
 }
