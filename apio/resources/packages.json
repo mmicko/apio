@@ -27,19 +27,33 @@
     },
     "description": "Scons tool"
   },
-  "icestorm" : {
+  "yosys" : {
     "repository": {
-      "name": "toolchain-icestorm",
-      "organization": "FPGAwars"
+      "name": "apio-tools",
+      "organization": "mmicko"
     },
     "release": {
       "tag_name": "v%V",
-      "compressed_name": "toolchain-icestorm-%P-%V",
+      "compressed_name": "toolchain-yosys-%P-%V",
       "uncompressed_name": "",
-      "package_name": "toolchain-icestorm",
+      "package_name": "toolchain-yosys",
       "extension":  "tar.gz"
     },
-    "description": "Icestorm toolchain"
+    "description": "yosys toolchain"
+  },  
+  "ice40" : {
+    "repository": {
+      "name": "apio-tools",
+      "organization": "mmicko"
+    },
+    "release": {
+      "tag_name": "v%V",
+      "compressed_name": "toolchain-ice40-%P-%V",
+      "uncompressed_name": "",
+      "package_name": "toolchain-ice40",
+      "extension":  "tar.gz"
+    },
+    "description": "ICE40 toolchain"
   },
   "iverilog" : {
     "repository": {
@@ -57,8 +71,8 @@
   },
   "system" : {
     "repository": {
-      "name": "tools-system",
-      "organization": "FPGAwars"
+      "name": "apio-tools",
+      "organization": "mmicko"
     },
     "release": {
       "tag_name": "v%V",
