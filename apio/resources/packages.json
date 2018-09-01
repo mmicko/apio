@@ -55,6 +55,20 @@
     },
     "description": "ICE40 toolchain"
   },
+  "ecp5" : {
+    "repository": {
+      "name": "apio-tools",
+      "organization": "mmicko"
+    },
+    "release": {
+      "tag_name": "v%V",
+      "compressed_name": "toolchain-ecp5-%P-%V",
+      "uncompressed_name": "",
+      "package_name": "toolchain-ecp5",
+      "extension":  "tar.gz"
+    },
+    "description": "ECP5 toolchain"
+  },
   "iverilog" : {
     "repository": {
       "name": "toolchain-iverilog",
