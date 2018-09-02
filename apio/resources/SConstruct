@@ -22,7 +22,7 @@ FPGA_TYPE = ARGUMENTS.get('fpga_type', '')
 FPGA_PACK = ARGUMENTS.get('fpga_pack', '')
 VERBOSE_ALL = ARGUMENTS.get('verbose_all', False)
 VERBOSE_YOSYS = ARGUMENTS.get('verbose_yosys', False)
-VERBOSE_ARACHNE = ARGUMENTS.get('verbose_arachne', False)
+VERBOSE_PNR = ARGUMENTS.get('verbose_pnr', False)
 VERILATOR_ALL = ARGUMENTS.get('all', False)
 VERILATOR_NO_STYLE = ARGUMENTS.get('nostyle', False)
 VERILATOR_NO_WARN = ARGUMENTS.get('nowarn', '').split(',')
@@ -179,7 +179,7 @@ synth = Builder(
 pnr = Builder(
     action='arachne-pnr -d {0} -P {1} -p {2} -o $TARGET {3} $SOURCE'.format(
         FPGA_SIZE, FPGA_PACK, PCF,
-        '' if VERBOSE_ALL or VERBOSE_ARACHNE else '-q'),
+        '' if VERBOSE_ALL or VERBOSE_PNR else '-q'),
     suffix='.asc',
     src_suffix='.blif')
 
