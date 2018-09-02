@@ -201,8 +201,8 @@ env.Append(BUILDERS={
     'Synth': synth, 'PnR': pnr, 'Bin': bitstream, 'Time': time_rpt})
 
 # -- Generate the bitstream
-blif = env.Synth(TARGET, [src_synth])
-asc = env.PnR(TARGET, [blif, PCF])
+json_out = env.Synth(TARGET, [src_synth])
+asc = env.PnR(TARGET, [json_out, PCF])
 bitstream = env.Bin(TARGET, asc)
 
 build = env.Alias('build', bitstream)

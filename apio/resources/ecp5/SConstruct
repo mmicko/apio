@@ -80,7 +80,7 @@ VLIB_F = ['"{}"'.format(f) for f in Glob(os.path.join(VLIB_PATH, '*.v'))]
 VLIB_FILES = ' '.join(VLIB_F) if VLIB_PATH else ''
 TRELLIS_PATH = os.environ['TRELLIS'] if 'TRELLIS' in os.environ else ''
 BASECFG_PATH = os.path.join(TRELLIS_PATH, 'basecfgs', 'empty_{0}-{1}.config'.format(FPGA_TYPE,FPGA_SIZE.replace('k','f')))
-
+DATABASE_PATH = os.path.join(TRELLIS_PATH, 'database')
 CHIPDB_PATH = os.path.join(TRELLIS_PATH, 'chipdb-{0}.txt'.format(FPGA_SIZE))
 VERILATOR_PATH = os.environ['VERLIB'] if 'VERLIB' in os.environ else ''
 
@@ -174,9 +174,14 @@ pnr = Builder(
     src_suffix='.json')
 
 bitstream = Builder(
-    action='echo Here comes creating of bitstream [ $SOURCE $TARGET ] > $TARGET',
-    suffix='.bin',
+    action='ecppack --db {0} $SOURCE hardware.bit'.format(DATABASE_PATH),
+    suffix='.bit',
     src_suffix='.config')
+
+bit_to_svf = Builder(
+    action='bit_to_svf.py hardware.bit $TARGET',
+    suffix='.svf',
+    src_suffix='.bit')
 
 time_rpt = Builder(
     action='echo Here comes time analysis $TARGET $SOURCE  > $TARGET',
@@ -185,18 +190,19 @@ time_rpt = Builder(
 
 # -- Build the environment
 env.Append(BUILDERS={
-    'Synth': synth, 'PnR': pnr, 'Bin': bitstream, 'Time': time_rpt})
+    'Synth': synth, 'PnR': pnr, 'Bin': bitstream, 'SVF': bit_to_svf, 'Time': time_rpt})
 
 # -- Generate the bitstream
 json_out = env.Synth(TARGET, [src_synth])
 config_out = env.PnR(TARGET, [json_out])
 bitstream = env.Bin(TARGET, config_out)
+svf = env.SVF(TARGET, bitstream)
 
-build = env.Alias('build', bitstream)
+build = env.Alias('build', svf)
 AlwaysBuild(build)
 
 # -- Upload the bitstream into FPGA
-#upload = env.Alias('upload', bitstream, '{0} $SOURCE'.format(PROG))
+#upload = env.Alias('upload', svf, '{0} $SOURCE'.format(PROG))
 #AlwaysBuild(upload)
 
 # -- Target time: calculate the time
@@ -254,7 +260,7 @@ lout = env.Verilator(TARGET, src_synth)
 lint = env.Alias('lint', lout)
 AlwaysBuild(lint)
 
-Default(bitstream)
+Default(svf)
 
 # -- These is for cleaning the files generated using the alias targets
 if GetOption('clean'):
