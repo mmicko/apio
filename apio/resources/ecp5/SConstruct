@@ -202,8 +202,8 @@ build = env.Alias('build', svf)
 AlwaysBuild(build)
 
 # -- Upload the bitstream into FPGA
-#upload = env.Alias('upload', svf, '{0} $SOURCE'.format(PROG))
-#AlwaysBuild(upload)
+upload = env.Alias('upload', bitstream, '{0} $SOURCE'.format(PROG))
+AlwaysBuild(upload)
 
 # -- Target time: calculate the time
 rpt = env.Time(config_out)

@@ -278,10 +278,10 @@
     },
     "usb": {
       "vid": "0403",
-      "pid": "6010"
+      "pid": "6015"
     },
     "ftdi": {
-      "desc": "Dual RS232-HS"
+      "desc": "ULX3S FPGA 45K v1.7"
     }
   },  
   "versa": {
@@ -295,7 +295,7 @@
       "pid": "6010"
     },
     "ftdi": {
-      "desc": "Dual RS232-HS"
+      "desc": "Lattice ECP5 Versa Board"
     }
   }
 }
