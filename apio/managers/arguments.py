@@ -13,12 +13,22 @@ from apio.managers.project import Project
 
 def process_arguments(args, resources):  # noqa
     # -- Check arguments
-    var_board = args.get('board')
-    var_fpga = args.get('fpga')
-    var_size = args.get('size')
-    var_type = args.get('type')
-    var_pack = args.get('pack')
-    var_verbose = args.get('verbose')
+    if args is not None:
+        var_board = args.get('board')
+        var_arch = args.get('arch')
+        var_fpga = args.get('fpga')
+        var_size = args.get('size')
+        var_type = args.get('type')
+        var_pack = args.get('pack')
+        var_verbose = args.get('verbose')
+    else:
+        var_board = None
+        var_arch = None
+        var_fpga = None
+        var_size = None
+        var_type = None
+        var_pack = None
+        var_verbose = {}
 
     if var_board:
         if isfile('apio.ini'):
@@ -29,6 +39,7 @@ def process_arguments(args, resources):  # noqa
                 fpga_size = resources.fpgas.get(fpga).get('size')
                 fpga_type = resources.fpgas.get(fpga).get('type')
                 fpga_pack = resources.fpgas.get(fpga).get('pack')
+                fpga_arch = resources.fpgas.get(fpga).get('arch')
 
                 redundant_arguments = []
                 contradictory_arguments = []
@@ -93,6 +104,7 @@ def process_arguments(args, resources):  # noqa
                 fpga_size = resources.fpgas.get(var_fpga).get('size')
                 fpga_type = resources.fpgas.get(var_fpga).get('type')
                 fpga_pack = resources.fpgas.get(var_fpga).get('pack')
+                fpga_arch = resources.fpgas.get(var_fpga).get('arch')
 
                 redundant_arguments = []
                 contradictory_arguments = []
@@ -135,12 +147,13 @@ def process_arguments(args, resources):  # noqa
                 # Unknown FPGA
                 raise Exception('unknown FPGA: {0}'.format(var_fpga))
         else:
-            if var_size and var_type and var_pack:
+            if var_size and var_type and var_pack and var_arch:
                 if isfile('apio.ini'):
                     click.secho('Info: ignore apio.ini board', fg='yellow')
                 fpga_size = var_size
                 fpga_type = var_type
                 fpga_pack = var_pack
+                fpga_arch = var_arch
             else:
                 if not var_size and not var_type and not var_pack:
                     # No arguments: use apio.ini board
@@ -153,6 +166,7 @@ def process_arguments(args, resources):  # noqa
                             fpga_size = resources.fpgas.get(fpga).get('size')
                             fpga_type = resources.fpgas.get(fpga).get('type')
                             fpga_pack = resources.fpgas.get(fpga).get('pack')
+                            fpga_arch = resources.fpgas.get(fpga).get('arch')
                         else:
                             # Unknown board
                             raise Exception('unknown board: {0}'.format(
@@ -190,12 +204,13 @@ def process_arguments(args, resources):  # noqa
         'fpga_size': fpga_size,
         'fpga_type': fpga_type,
         'fpga_pack': fpga_pack,
+        'fpga_arch': fpga_arch,
         'verbose_all': var_verbose.get('all'),
         'verbose_yosys': var_verbose.get('yosys'),
         'verbose_arachne': var_verbose.get('arachne')
     })
 
-    return variables, var_board
+    return variables, var_board, fpga_arch
 
 
 def format_vars(args):
