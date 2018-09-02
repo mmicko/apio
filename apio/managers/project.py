@@ -25,6 +25,7 @@ class Project(object):
 
     def __init__(self):
         self.board = None
+        self.legacy = False
 
     def create_sconstruct(self, project_dir='', sayyes=False):
         """Creates a default SConstruct file"""
@@ -57,7 +58,7 @@ class Project(object):
             self._copy_sconstruct_file(sconstruct_name, sconstruct_path,
                                        local_sconstruct_path)
 
-    def create_ini(self, board, project_dir='', sayyes=False):
+    def create_ini(self, board, project_dir='', sayyes=False, legacy=False):
         """Creates a new apio project file"""
 
         project_dir = util.check_dir(project_dir)
@@ -75,24 +76,25 @@ class Project(object):
         if isfile(ini_path):
             # -- If sayyes, skip the question
             if sayyes:
-                self._create_ini_file(board, ini_path, PROJECT_FILENAME)
+                self._create_ini_file(board, ini_path, PROJECT_FILENAME, legacy)
             else:
                 click.secho(
-                    'Warning: {} file already exists'.format(PROJECT_FILENAME),
+                    'Warning: {} file already exists'.format(PROJECT_FILENAME, legacy),
                     fg='yellow')
                 if click.confirm('Do you want to replace it?'):
-                    self._create_ini_file(board, ini_path, PROJECT_FILENAME)
+                    self._create_ini_file(board, ini_path, PROJECT_FILENAME, legacy)
                 else:
                     click.secho('Abort!', fg='red')
         else:
-            self._create_ini_file(board, ini_path, PROJECT_FILENAME)
+            self._create_ini_file(board, ini_path, PROJECT_FILENAME, legacy)
 
-    def _create_ini_file(self, board, ini_path, ini_name):
+    def _create_ini_file(self, board, ini_path, ini_name, legacy):
         click.secho('Creating {} file ...'.format(ini_name))
         with open(ini_path, 'w') as file:
             config = ConfigParser.ConfigParser()
             config.add_section('env')
-            config.set('env', 'board', board)
+            config.set('env', 'board', board)            
+            config.set('env', 'legacy', legacy)
             config.write(file)
             click.secho(
                 'File \'{}\' has been successfully created!'.format(
@@ -146,6 +148,8 @@ class Project(object):
                 config = ConfigParser.ConfigParser()
                 config.read(PROJECT_FILENAME)
                 board = config.get('env', 'board')
+                if config.has_option('env', 'legacy'):
+                    self.legacy = config.get('env', 'legacy')
             except Exception:
                 print('Error: Invalid {} project file'.format(
                     PROJECT_FILENAME))

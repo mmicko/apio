@@ -36,8 +36,10 @@ if (sys.version_info > (3, 0)):
               help='Show the arachne output of the command (deprecated).')
 @click.option('--verbose-pnr', is_flag=True,
               help='Show the pnr output of the command.')
+@click.option('-l', '--legacy', is_flag=True,
+              help='Use legacy place and route.')              
 def cli(ctx, board, fpga, pack, type, size, project_dir,
-        verbose, verbose_yosys, verbose_arachne, verbose_pnr):
+        verbose, verbose_yosys, verbose_arachne, verbose_pnr, legacy):
     """Bitstream timing analysis."""
 
     # Run scons
@@ -47,6 +49,7 @@ def cli(ctx, board, fpga, pack, type, size, project_dir,
         'size': size,
         'type': type,
         'pack': pack,
+        'legacy': legacy,
         'verbose': {
             'all': verbose,
             'yosys': verbose_yosys,

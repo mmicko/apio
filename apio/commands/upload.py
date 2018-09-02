@@ -35,8 +35,10 @@ if (sys.version_info > (3, 0)):
               help='Show the arachne output of the command (deprecated).')
 @click.option('--verbose-pnr', is_flag=True,
               help='Show the pnr output of the command.')
+@click.option('-l', '--legacy', is_flag=True,
+              help='Use legacy place and route.')              
 def cli(ctx, board, serial_port, ftdi_id, sram, project_dir,
-        verbose, verbose_yosys, verbose_arachne, verbose_pnr):
+        verbose, verbose_yosys, verbose_arachne, verbose_pnr, legacy):
     """Upload the bitstream to the FPGA."""
 
     drivers = Drivers()
@@ -44,6 +46,7 @@ def cli(ctx, board, serial_port, ftdi_id, sram, project_dir,
     # Run scons
     exit_code = SCons(project_dir).upload({
         'board': board,
+        'legacy': legacy,
         'verbose': {
             'all': verbose,
             'yosys': verbose_yosys,

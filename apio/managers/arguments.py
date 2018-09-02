@@ -21,6 +21,7 @@ def process_arguments(args, resources):  # noqa
         var_type = args.get('type')
         var_pack = args.get('pack')
         var_verbose = args.get('verbose')
+        var_legacy = args.get('legacy')
     else:
         var_board = None
         var_arch = None
@@ -29,6 +30,7 @@ def process_arguments(args, resources):  # noqa
         var_type = None
         var_pack = None
         var_verbose = {}
+        var_legacy = False
 
     if var_board:
         if isfile('apio.ini'):
@@ -159,6 +161,8 @@ def process_arguments(args, resources):  # noqa
                     # No arguments: use apio.ini board
                     p = Project()
                     p.read()
+                    if not var_legacy:
+                        var_legacy = p.legacy
                     if p.board:
                         var_board = p.board
                         if var_board in resources.boards:
@@ -200,7 +204,7 @@ def process_arguments(args, resources):  # noqa
                             ', '.join(missing)))
 
     # -- Build Scons variables list
-    variables = format_vars({
+    variables = format_vars({        
         'fpga_size': fpga_size,
         'fpga_type': fpga_type,
         'fpga_pack': fpga_pack,
@@ -210,7 +214,7 @@ def process_arguments(args, resources):  # noqa
         'verbose_pnr': var_verbose.get('pnr')
     })
 
-    return variables, var_board, fpga_arch
+    return variables, var_board, fpga_arch, var_legacy
 
 
 def format_vars(args):

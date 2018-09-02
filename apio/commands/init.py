@@ -24,12 +24,14 @@ if (sys.version_info > (3, 0)):
               help='Set the target directory for the project.')
 @click.option('-y', '--sayyes', is_flag=True,
               help='Automatically answer YES to all the questions.')
-def cli(ctx, board, scons, project_dir, sayyes):
+@click.option('-l', '--legacy', is_flag=True,
+              help='Use legacy place and route.')
+def cli(ctx, board, scons, project_dir, sayyes, legacy):
     """Manage apio projects."""
 
     if scons:
         Project().create_sconstruct(project_dir, sayyes)
     elif board:
-        Project().create_ini(board, project_dir, sayyes)
+        Project().create_ini(board, project_dir, sayyes, legacy)
     else:
         click.secho(ctx.get_help())

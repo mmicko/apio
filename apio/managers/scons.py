@@ -35,17 +35,17 @@ class SCons(object):
 
     @util.command
     def clean(self):
-        var, board, arch = process_arguments(None, self.resources)
-        return self.run('-c', arch=arch, packages=['scons'])
+        var, board, arch, legacy  = process_arguments(None, self.resources)
+        return self.run('-c', arch=arch, legacy=legacy, packages=['scons'])
 
     @util.command
     def verify(self):
-        var, board, arch = process_arguments(None, self.resources)
-        return self.run('verify', arch=arch, packages=['scons', 'iverilog'])
+        var, board, arch, legacy  = process_arguments(None, self.resources)
+        return self.run('verify', arch=arch, legacy=legacy, packages=['scons', 'iverilog'])
 
     @util.command
     def lint(self, args):
-        var_dummy, board, arch = process_arguments(None, self.resources)
+        var_dummy, board, arch, legacy  = process_arguments(None, self.resources)
         var = format_vars({
             'all': args.get('all'),
             'top': args.get('top'),
@@ -53,29 +53,29 @@ class SCons(object):
             'warn': args.get('warn'),
             'nostyle': args.get('nostyle')
         })
-        return self.run('lint', var, arch=arch, packages=['scons', 'verilator'])
+        return self.run('lint', var, arch=arch, legacy=legacy, packages=['scons', 'verilator'])
 
     @util.command
     def sim(self):
-        var, board, arch = process_arguments(None, self.resources)
-        return self.run('sim', arch=arch, packages=['scons', 'iverilog', 'gtkwave'])
+        var, board, arch, legacy  = process_arguments(None, self.resources)
+        return self.run('sim', arch=arch, legacy=legacy, packages=['scons', 'iverilog', 'gtkwave'])
 
     @util.command
     def build(self, args):
-        var, board, arch = process_arguments(args, self.resources)
-        return self.run('build', var, board, arch, packages=['scons', 'yosys', arch])
+        var, board, arch, legacy  = process_arguments(args, self.resources)
+        return self.run('build', var, board, arch, legacy=legacy, packages=['scons', 'yosys', arch])
 
     @util.command
     def time(self, args):
-        var, board, arch = process_arguments(args, self.resources)
-        return self.run('time', var, board, arch, packages=['scons', arch])
+        var, board, arch, legacy  = process_arguments(args, self.resources)
+        return self.run('time', var, board, arch, legacy=legacy, packages=['scons', arch])
 
     @util.command
     def upload(self, args, serial_port, ftdi_id, sram):
-        var, board, arch = process_arguments(args, self.resources)
+        var, board, arch, legacy  = process_arguments(args, self.resources)
         programmer = self.get_programmer(board, serial_port, ftdi_id, sram)
         var += ['prog={0}'.format(programmer)]
-        return self.run('upload', var, board, arch, packages=['scons', arch])
+        return self.run('upload', var, board, arch, legacy=legacy, packages=['scons', arch])
 
     def get_programmer(self, board, ext_serial, ext_ftdi_id, sram):
         programmer = ''
@@ -284,14 +284,18 @@ class SCons(object):
                 # return the index for the FTDI device.
                 return index
 
-    def run(self, command, variables=[], board=None, arch=None, packages=[]):
+    def run(self, command, variables=[], board=None, arch=None, legacy=False, packages=[]):
         """Executes scons for building"""
 
         # -- Check for the SConstruct file
         if not isfile(util.safe_join(util.get_project_dir(), 'SConstruct')):
             variables += ['-f']
-            variables += [util.safe_join(
-                util.get_folder('resources'), arch, 'SConstruct')]
+            if legacy:
+                variables += [util.safe_join(
+                    util.get_folder('resources'), arch, 'legacy', 'SConstruct')]
+            else:
+                variables += [util.safe_join(
+                    util.get_folder('resources'), arch, 'SConstruct')]
         else:
             click.secho('Info: use custom SConstruct file')
 
