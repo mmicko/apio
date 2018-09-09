@@ -39,7 +39,7 @@
       "package_name": "toolchain-yosys",
       "extension":  "tar.gz"
     },
-    "description": "yosys toolchain"
+    "description": "Yosys toolchain"
   },  
   "ice40" : {
     "repository": {
@@ -71,8 +71,8 @@
   },
   "iverilog" : {
     "repository": {
-      "name": "toolchain-iverilog",
-      "organization": "FPGAwars"
+      "name": "apio-tools",
+      "organization": "mmicko"
     },
     "release": {
       "tag_name": "v%V",
@@ -133,8 +133,8 @@
   },
   "verilator" : {
     "repository": {
-      "name": "toolchain-verilator",
-      "organization": "FPGAwars"
+      "name": "apio-tools",
+      "organization": "mmicko"
     },
     "release": {
       "tag_name": "v%V",
