@@ -82,7 +82,7 @@ TRELLIS_PATH = os.environ['TRELLIS'] if 'TRELLIS' in os.environ else ''
 BASECFG_PATH = os.path.join(TRELLIS_PATH, 'basecfgs', 'empty_{0}-{1}.config'.format(FPGA_TYPE,FPGA_SIZE.replace('k','f')))
 DATABASE_PATH = os.path.join(TRELLIS_PATH, 'database')
 CHIPDB_PATH = os.path.join(TRELLIS_PATH, 'chipdb-{0}.txt'.format(FPGA_SIZE))
-VERILATOR_PATH = os.environ['VERLIB'] if 'VERLIB' in os.environ else ''
+YOSYS_PATH = os.environ['YOSYS_LIB'] if 'YOSYS_LIB' in os.environ else ''
 
 isWindows = 'Windows' == system()
 VVP_PATH = '' if isWindows or not IVL_PATH else '-M "{0}"'.format(IVL_PATH)
@@ -243,8 +243,8 @@ AlwaysBuild(waves)
 
 # -- Verilator builder
 verilator = Builder(
-    action='verilator --lint-only -I{0} {1} {2} {3} {4} $SOURCES'.format(
-        VERILATOR_PATH,
+    action='verilator --lint-only -v {0}/ecp5/cells_sim.v {1} {2} {3} {4} $SOURCES'.format(
+        YOSYS_PATH,
         '-Wall' if VERILATOR_ALL else '',
         '-Wno-style' if VERILATOR_NO_STYLE else '',
         VERILATOR_PARAM_STR if VERILATOR_PARAM_STR else '',

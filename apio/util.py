@@ -277,8 +277,8 @@ def resolve_packages(packages, installed_packages, spec_packages):
             base_dir.get('ice40'), 'share', 'icebox')
         os.environ['TRELLIS'] = safe_join(
             base_dir.get('ecp5'), 'share', 'trellis')
-        os.environ['VERLIB'] = safe_join(
-            base_dir.get('verilator'), 'share')
+        os.environ['YOSYS_LIB'] = safe_join(
+            base_dir.get('yosys'), 'share', 'yosys')
 
         global scons_command
         scons_command = [normpath(sys.executable),
