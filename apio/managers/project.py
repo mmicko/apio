@@ -76,13 +76,16 @@ class Project(object):
         if isfile(ini_path):
             # -- If sayyes, skip the question
             if sayyes:
-                self._create_ini_file(board, ini_path, PROJECT_FILENAME, legacy)
+                self._create_ini_file(board, ini_path, PROJECT_FILENAME,
+                                      legacy)
             else:
                 click.secho(
-                    'Warning: {} file already exists'.format(PROJECT_FILENAME, legacy),
+                    'Warning: {} file already exists'.format(PROJECT_FILENAME,
+                                                             legacy),
                     fg='yellow')
                 if click.confirm('Do you want to replace it?'):
-                    self._create_ini_file(board, ini_path, PROJECT_FILENAME, legacy)
+                    self._create_ini_file(board, ini_path, PROJECT_FILENAME,
+                                          legacy)
                 else:
                     click.secho('Abort!', fg='red')
         else:
@@ -93,7 +96,7 @@ class Project(object):
         with open(ini_path, 'w') as file:
             config = ConfigParser.ConfigParser()
             config.add_section('env')
-            config.set('env', 'board', board)            
+            config.set('env', 'board', board)
             config.set('env', 'legacy', legacy)
             config.write(file)
             click.secho(

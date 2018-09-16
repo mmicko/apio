@@ -204,7 +204,7 @@ def process_arguments(args, resources):  # noqa
                             ', '.join(missing)))
 
     # -- Build Scons variables list
-    variables = format_vars({        
+    variables = format_vars({
         'fpga_size': fpga_size,
         'fpga_type': fpga_type,
         'fpga_pack': fpga_pack,
