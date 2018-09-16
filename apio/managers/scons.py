@@ -56,7 +56,7 @@ class SCons(object):
             'nostyle': args.get('nostyle')
         })
         return self.run('lint', var, arch=arch, legacy=legacy,
-                        packages=['scons', 'verilator'])
+                        packages=['scons', 'verilator', 'yosys'])
 
     @util.command
     def sim(self):
@@ -64,10 +64,10 @@ class SCons(object):
         platform = util.get_systype()
         if 'windows' in platform:
             return self.run('sim', arch=arch, legacy=legacy,
-                            packages=['scons', 'iverilog', 'gtkwave'])
+                            packages=['scons', 'iverilog', 'yosys', 'gtkwave'])
         else:
             return self.run('sim', arch=arch, legacy=legacy,
-                            packages=['scons', 'iverilog'])
+                            packages=['scons', 'iverilog', 'yosys'])
 
     @util.command
     def build(self, args):

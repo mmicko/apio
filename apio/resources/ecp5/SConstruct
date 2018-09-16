@@ -75,14 +75,13 @@ if 'build' in COMMAND_LINE_TARGETS or \
 
 # -- Resources paths
 IVL_PATH = os.environ['IVL'] if 'IVL' in os.environ else ''
-VLIB_PATH = os.environ['VLIB'] if 'VLIB' in os.environ else ''
-VLIB_F = ['"{}"'.format(f) for f in Glob(os.path.join(VLIB_PATH, '*.v'))]
-VLIB_FILES = ' '.join(VLIB_F) if VLIB_PATH else ''
+YOSYS_PATH = os.environ['YOSYS_LIB'] if 'YOSYS_LIB' in os.environ else ''
+VLIB_F = ['"{}"'.format(f) for f in Glob(os.path.join(YOSYS_PATH, 'ecp5', '*_sim.v'))]
+VLIB_FILES = ' '.join(VLIB_F) if YOSYS_PATH else ''
 TRELLIS_PATH = os.environ['TRELLIS'] if 'TRELLIS' in os.environ else ''
 BASECFG_PATH = os.path.join(TRELLIS_PATH, 'basecfgs', 'empty_{0}-{1}.config'.format(FPGA_TYPE,FPGA_SIZE.replace('k','f')))
 DATABASE_PATH = os.path.join(TRELLIS_PATH, 'database')
 CHIPDB_PATH = os.path.join(TRELLIS_PATH, 'chipdb-{0}.txt'.format(FPGA_SIZE))
-YOSYS_PATH = os.environ['YOSYS_LIB'] if 'YOSYS_LIB' in os.environ else ''
 
 isWindows = 'Windows' == system()
 VVP_PATH = '' if isWindows or not IVL_PATH else '-M "{0}"'.format(IVL_PATH)

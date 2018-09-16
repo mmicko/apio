@@ -271,8 +271,6 @@ def resolve_packages(packages, installed_packages, spec_packages):
         if not config_data:  # /etc/apio.json file does not exist
             os.environ['IVL'] = safe_join(
                 base_dir.get('iverilog'), 'lib', 'ivl')
-        os.environ['VLIB'] = safe_join(
-            base_dir.get('iverilog'), 'vlib')
         os.environ['ICEBOX'] = safe_join(
             base_dir.get('ice40'), 'share', 'icebox')
         os.environ['TRELLIS'] = safe_join(
